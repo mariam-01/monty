@@ -1,4 +1,59 @@
 #include "monty.h"
+
+
+
+#define INITIAL_BUFFER_SIZE 64
+
+int _getline(char **lineptr, size_t *n, FILE *stream) {
+    size_t bufferSize = *n;
+    char *buffer = *lineptr;
+    int currentChar;
+    size_t i = 0;
+
+    if (lineptr == NULL || n == NULL || stream == NULL) {
+        return -1; /* Invalid input parameters */
+    }
+
+    if (buffer == NULL) {
+        bufferSize = INITIAL_BUFFER_SIZE;
+        buffer = (char *)malloc(bufferSize);
+        if (buffer == NULL) {
+            return -1; /* Memory allocation failed */
+        }
+    }
+
+    while ((currentChar = fgetc(stream)) != EOF) {
+	char *newBuffer;
+        if (i >= bufferSize - 1) { /* Leave space for the null-terminator */
+            bufferSize *= 2;
+            newBuffer = (char *)realloc(buffer, bufferSize);
+            if (newBuffer == NULL) {
+                free(buffer);
+                return -1; /* Memory reallocation failed */
+            }
+            buffer = newBuffer;
+        }
+
+        buffer[i++] = currentChar;
+
+        if (currentChar == '\n') {
+            break;
+        }
+    }
+
+    buffer[i] = '\0'; /* Null-terminate the string */
+
+    *lineptr = buffer;
+    *n = bufferSize;
+
+    if (i == 0 && currentChar == EOF) {
+        return -1; /* No characters read (end-of-file) */
+    }
+
+    return i; /* Return the number of characters read (excluding null-terminator) */
+}
+
+
 /**
  * addnode - add node to the head stack
  * @head: head of the stack
@@ -45,7 +100,7 @@ int execute(char *content, stack_t **stack, unsigned int counter, FILE *file)
 	op = strtok(content, " \n\t");
 	if (op && op[0] == '#')
 		return (0);
-	bus.arg = strtok(NULL, " \n\t");
+	mon.arg = strtok(NULL, " \n\t");
 	while (opst[i].opcode && op)
 	{
 		if (strcmp(op, opst[i].opcode) == 0)
@@ -114,79 +169,6 @@ void addqueue(stack_t **head, int n)
 		aux->next = new_node;
 		new_node->prev = aux;
 	}
-}
-
-/**
- * f_pint - prints the top
- * @head: stack head
- * @counter: line_number
- * Return: no return
-*/
-void f_pint(stack_t **head, unsigned int counter)
-{
-	if (*head == NULL)
-	{
-		fprintf(stderr, "L%u: can't pint, stack empty\n", counter);
-		fclose(bus.file);
-		free(bus.content);
-		free_stack(*head);
-		exit(EXIT_FAILURE);
-	}
-	printf("%d\n", (*head)->n);
-}
-
-/**
- * f_swap - adds the top two elements of the stack.
- * @head: stack head
- * @counter: line_number
- * Return: no return
-*/
-void f_swap(stack_t **head, unsigned int counter)
-{
-	stack_t *h;
-	int len = 0, aux;
-
-	h = *head;
-	while (h)
-	{
-		h = h->next;
-		len++;
-	}
-	if (len < 2)
-	{
-		fprintf(stderr, "L%d: can't swap, stack too short\n", counter);
-		fclose(bus.file);
-		free(bus.content);
-		free_stack(*head);
-		exit(EXIT_FAILURE);
-	}
-	h = *head;
-	aux = h->n;
-	h->n = h->next->n;
-	h->next->n = aux;
-}
-
-/**
- * f_pop - prints the top
- * @head: stack head
- * @counter: line_number
- * Return: no return
-*/
-void f_pop(stack_t **head, unsigned int counter)
-{
-	stack_t *h;
-
-	if (*head == NULL)
-	{
-		fprintf(stderr, "L%d: can't pop an empty stack\n", counter);
-		fclose(bus.file);
-		free(bus.content);
-		free_stack(*head);
-		exit(EXIT_FAILURE);
-	}
-	h = *head;
-	*head = h->next;
-	free(h);
 }
 
 

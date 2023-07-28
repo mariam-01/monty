@@ -44,21 +44,21 @@ void (*f)(stack_t **stack, unsigned int line_number);
 extern stack_t *global_stack;
 
 /**
- * struct bus_s - variables -args, file, line content
+ * struct mont_s - variables -args, file, line content
  * @arg: value
  * @file: pointer to monty file
  * @content: line content
  * @lifi: flag change stack <-> queue
  * Description: carries values through the program
  */
-typedef struct bus_s
+typedef struct mont_s
 {
 	char *arg;
 	FILE *file;
 	char *content;
 	int lifi;
-}  bus_t;
-extern bus_t bus;
+}  mon_t;
+extern mon_t mon;
 
 /**
   *functions prototypes
