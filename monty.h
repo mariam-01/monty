@@ -63,10 +63,10 @@ extern mon_t mon;
 /**
   *functions prototypes
   */
-void addqueue(stack_t **head, int n);
+void add_queue(stack_t **head, int n);
 void free_stack(stack_t *head);
 int execute(char *content, stack_t **stack, unsigned int counter, FILE *file);
-void addnode(stack_t **head, int n);
+void add_node(stack_t **head, int n);
 
 
 
@@ -76,7 +76,7 @@ void f_pall(stack_t **head, unsigned int number);
 void f_pint(stack_t **head, unsigned int number);
 void f_pop(stack_t **head, unsigned int counter);
 void f_swap(stack_t **head, unsigned int counter);
-void f_add(stack_t **head, unsigned int counter);
-void f_nop(stack_t **head, unsigned int counter);
+void _add(stack_t **head, unsigned int counter);
+void _nop(stack_t **head, unsigned int counter);
 
 #endif /* MONTY_H */

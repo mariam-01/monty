@@ -55,12 +55,12 @@ int _getline(char **lineptr, size_t *n, FILE *stream) {
 
 
 /**
- * addnode - add node to the head stack
+ * add_node - add node to the head stack
  * @head: head of the stack
  * @n: new_value
  * Return: no return
 */
-void addnode(stack_t **head, int n)
+void add_node(stack_t **head, int n)
 {
 
 	stack_t *new_node, *aux;
@@ -89,9 +89,9 @@ void addnode(stack_t **head, int n)
 int execute(char *content, stack_t **stack, unsigned int counter, FILE *file)
 {
 	instruction_t opst[] = {
-				{"push", f_push}, {"pall", f_pall}, {"pint", f_pint},
-				{"pop", f_pop},
-				{"swap", f_swap},
+				{"push", _push}, {"pall", _pall}, {"pint", _pint},
+				{"pop", _pop},
+				{"swap", _swap},
 				{NULL, NULL}
 				};
 	unsigned int i = 0;
@@ -137,12 +137,12 @@ void free_stack(stack_t *head)
 }
 
 /**
- * addqueue - add node to the tail stack
+ * add_queue - add node to the tail stack
  * @n: new_value
  * @head: head of the stack
  * Return: no return
 */
-void addqueue(stack_t **head, int n)
+void add_queue(stack_t **head, int n)
 {
 	stack_t *new_node, *aux;
 

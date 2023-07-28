@@ -1,11 +1,11 @@
 #include "monty.h"
 /**
- * f_pall - prints the stack
+ * _pall - prints the stack
  * @head: stack head
  * @counter: no used
  * Return: no return
 */
-void f_pall(stack_t **head, unsigned int counter)
+void _pall(stack_t **head, unsigned int counter)
 {
 	stack_t *h;
 	(void)counter;
@@ -21,12 +21,12 @@ void f_pall(stack_t **head, unsigned int counter)
 }
 
 /**
- * f_push - add node to the stack
+ * _push - add node to the stack
  * @head: stack head
  * @counter: line_number
  * Return: no return
 */
-void f_push(stack_t **head, unsigned int counter)
+void _push(stack_t **head, unsigned int counter)
 {
 	int n, j = 0, flag = 0;
 
@@ -52,18 +52,18 @@ void f_push(stack_t **head, unsigned int counter)
 		exit(EXIT_FAILURE); }
 	n = atoi(mon.arg);
 	if (mon.lifi == 0)
-		addnode(head, n);
+		add_node(head, n);
 	else
-		addqueue(head, n);
+		add_queue(head, n);
 }
 
 /**
- * f_pint - prints the top
+ * _pint - prints the top
  * @head: stack head
  * @counter: line_number
  * Return: no return
 */
-void f_pint(stack_t **head, unsigned int counter)
+void _pint(stack_t **head, unsigned int counter)
 {
 	if (*head == NULL)
 	{
@@ -77,12 +77,12 @@ void f_pint(stack_t **head, unsigned int counter)
 }
 
 /**
- * f_swap - adds the top two elements of the stack.
+ * _swap - adds the top two elements of the stack.
  * @head: stack head
  * @counter: line_number
  * Return: no return
 */
-void f_swap(stack_t **head, unsigned int counter)
+void _swap(stack_t **head, unsigned int counter)
 {
 	stack_t *h;
 	int len = 0, aux;
@@ -108,12 +108,12 @@ void f_swap(stack_t **head, unsigned int counter)
 }
 
 /**
- * f_pop - prints the top
+ * _pop - prints the top
  * @head: stack head
  * @counter: line_number
  * Return: no return
 */
-void f_pop(stack_t **head, unsigned int counter)
+void _pop(stack_t **head, unsigned int counter)
 {
 	stack_t *h;
 
@@ -130,12 +130,12 @@ void f_pop(stack_t **head, unsigned int counter)
 	free(h);
 }
 /**
- * f_add - adds the top two elements of the stack.
+ * _add - adds the top two elements of the stack.
  * @head: stack head
  * @counter: line_number
  * Return: no return
 */
-void f_add(stack_t **head, unsigned int counter)
+void _add(stack_t **head, unsigned int counter)
 {
 	stack_t *h;
 	int len = 0, aux;
@@ -162,12 +162,12 @@ void f_add(stack_t **head, unsigned int counter)
 }
 
 /**
-  *f_nop- nothing
+  *_nop- nothing
   *@head: stack head
   *@counter: line_number
   *Return: no return
  */
-void f_nop(stack_t **head, unsigned int counter)
+void _nop(stack_t **head, unsigned int counter)
 {
 	(void) counter;
 	(void) head;
