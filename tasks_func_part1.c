@@ -59,7 +59,7 @@ void _push(stack_t **stack, unsigned int line_number)
 
 	n = atoi(arg);
 	if (mon.lifi == 0)
-		add_node(stack, n);
+		add_to_head(stack, n);
 	else
 		add_queue(stack, n);
 }
