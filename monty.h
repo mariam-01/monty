@@ -63,10 +63,13 @@ extern mon_t mon;
 /**
   * helper functions prototypes
   */
+
+void free_stack(stack_t *stack);
 void add_queue(stack_t **head, int n);
-void free_stack(stack_t *head);
-int execute(char *content, stack_t **stack, unsigned int counter, FILE *file);
-void add_node(stack_t **head, int n);
+int execute(char *content, stack_t **stack, unsigned int line_number, FILE *file);
+void add_to_head(stack_t **stack, int value);
+
+
 
 /**
   * tasks functions prototypes

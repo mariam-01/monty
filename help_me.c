@@ -53,121 +53,126 @@ int _getline(char **lineptr, size_t *n, FILE *stream) {
     return i; /* Return the number of characters read (excluding null-terminator) */
 }
 
-
 /**
- * add_node - add node to the head stack
- * @head: head of the stack
- * @n: new_value
+ * add_to_head - add node to the head of the stack
+ * @stack: pointer to the head of the stack
+ * @value: new_value to be added
  * Return: no return
-*/
-void add_node(stack_t **head, int n)
+ */
+void add_to_head(stack_t **stack, int value)
 {
+    stack_t *new_node, *current;
 
-	stack_t *new_node, *aux;
+    current = *stack;
+    new_node = malloc(sizeof(stack_t));
+    if (new_node == NULL)
+    {
+        printf("Error\n");
+        exit(EXIT_FAILURE);
+    }
 
-	aux = *head;
-	new_node = malloc(sizeof(stack_t));
-	if (new_node == NULL)
-	{ printf("Error\n");
-		exit(0); }
-	if (aux)
-		aux->prev = new_node;
-	new_node->n = n;
-	new_node->next = *head;
-	new_node->prev = NULL;
-	*head = new_node;
+    if (current)
+        current->prev = new_node;
+
+    new_node->n = value;
+    new_node->next = current;
+    new_node->prev = NULL;
+    *stack = new_node;
 }
 
+
 /**
-* execute - executes the opcode
-* @stack: head linked list - stack
-* @counter: line_counter
-* @file: poiner to monty file
-* @content: line content
-* Return: no return
-*/
-int execute(char *content, stack_t **stack, unsigned int counter, FILE *file)
+ * free_stack - frees a doubly linked list
+ * @stack: head of the stack
+ */
+void free_stack(stack_t *stack)
 {
-	instruction_t opst[] = {
+	stack_t *current, *next_node;
+
+	current = stack;
+	while (current)
+	{
+		next_node = current->next;
+		free(current);
+		current = next_node;
+	}
+}
+
+
+
+
+/**
+ * execute - executes the opcode
+ * @content: line content
+ * @stack: head of the stack
+ * @line_number: line number in the file
+ * @file: pointer to the monty file
+ * Return: 0 on success, 1 if the opcode is not found
+ */
+int execute(char *content, stack_t **stack, unsigned int line_number, FILE *file)
+{
+instruction_t opst[] = {
 				{"push", _push}, {"pall", _pall}, {"pint", _pint},
 				{"pop", _pop},
 				{"swap", _swap},
 				{NULL, NULL}
 				};
-	unsigned int i = 0;
+unsigned int i = 0;
 	char *op;
 
 	op = strtok(content, " \n\t");
 	if (op && op[0] == '#')
 		return (0);
 	mon.arg = strtok(NULL, " \n\t");
-	while (opst[i].opcode && op)
+	while (opst[i].opcode)
 	{
 		if (strcmp(op, opst[i].opcode) == 0)
-		{	opst[i].f(stack, counter);
+		{
+			opst[i].f(stack, line_number);
 			return (0);
 		}
 		i++;
 	}
-	if (op && opst[i].opcode == NULL)
-	{ fprintf(stderr, "L%d: unknown instruction %s\n", counter, op);
-		fclose(file);
-		free(content);
-		free_stack(*stack);
-		exit(EXIT_FAILURE); }
-	return (1);
-}
-
-
-/**
-* free_stack - frees a doubly linked list
-* @head: head of the stack
-*/
-void free_stack(stack_t *head)
-{
-	stack_t *aux;
-
-	aux = head;
-	while (head)
-	{
-		aux = head->next;
-		free(head);
-		head = aux;
-	}
+	fprintf(stderr, "L%u: unknown instruction %s\n", line_number, op);
+	fclose(file);
+	free(content);
+	free_stack(*stack);
+	exit(EXIT_FAILURE);
 }
 
 /**
  * add_queue - add node to the tail stack
+ * @head: pointer to the head of the stack
  * @n: new_value
- * @head: head of the stack
  * Return: no return
-*/
+ */
 void add_queue(stack_t **head, int n)
 {
-	stack_t *new_node, *aux;
+	stack_t *new_node, *last_node;
 
-	aux = *head;
 	new_node = malloc(sizeof(stack_t));
 	if (new_node == NULL)
 	{
-		printf("Error\n");
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
 	}
+
 	new_node->n = n;
 	new_node->next = NULL;
-	if (aux)
+
+	if (*head == NULL)
 	{
-		while (aux->next)
-			aux = aux->next;
-	}
-	if (!aux)
-	{
-		*head = new_node;
 		new_node->prev = NULL;
+		*head = new_node;
 	}
 	else
 	{
-		aux->next = new_node;
-		new_node->prev = aux;
+		last_node = *head;
+		while (last_node->next)
+			last_node = last_node->next;
+
+		last_node->next = new_node;
+		new_node->prev = last_node;
 	}
 }
 
